@@ -66,14 +66,14 @@ program
         process.exit(1);
       }
 
-      // Create .git/worktrees directory if it doesn't exist
-      const worktreesDir = path.join(currentDir, '.git', 'worktrees');
-      if (!fs.existsSync(worktreesDir)) {
-        fs.mkdirSync(worktreesDir, { recursive: true });
+      // Create .git/worktree directory if it doesn't exist
+      const worktreeDir = path.join(currentDir, '.git', 'worktree');
+      if (!fs.existsSync(worktreeDir)) {
+        fs.mkdirSync(worktreeDir, { recursive: true });
       }
 
       // Create worktree path
-      const worktreePath = path.join(currentDir, '.git', 'worktrees', branch);
+      const worktreePath = path.join(currentDir, '.git', 'worktree', branch);
 
       // Check if worktree already exists
       try {

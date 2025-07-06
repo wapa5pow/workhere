@@ -1,6 +1,6 @@
 # workhere
 
-A simple git worktree management tool that creates worktrees in the `.git/worktrees` directory of your current Git repository.
+A simple git worktree management tool that creates worktrees in the `.git/worktree` directory of your current Git repository.
 
 ## Installation
 
@@ -41,7 +41,7 @@ This will:
 
 ## Features
 
-- Creates worktrees in the `.git/worktrees` directory of the current repository
+- Creates worktrees in the `.git/worktree` directory of the current repository
 - Supports post-creation script execution (`-s` option)
 - Checks for existing worktree conflicts
 - Verifies if the current directory is a Git repository
