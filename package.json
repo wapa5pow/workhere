@@ -1,6 +1,6 @@
 {
   "name": "workhere",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A CLI tool to create git worktrees in the current directory",
   "main": "dist/index.js",
   "bin": {
@@ -20,7 +20,7 @@
     "development",
     "workflow"
   ],
-  "author": "",
+  "author": "wapa5pow",
   "license": "MIT",
   "repository": {
     "type": "git",
