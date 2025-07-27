@@ -1,0 +1,2 @@
+- Write Git commit messages in English
+- Write GitHub PR creation in English (both title and body)
