@@ -11,7 +11,7 @@ npm install -g workhere
 Or run directly with npx:
 
 ```bash
-npx workhere
+npx workhere@latest
 ```
 
 ## Usage
