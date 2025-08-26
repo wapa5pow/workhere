@@ -22,6 +22,7 @@ npx workhere@latest
 
 ```bash
 workhere create [branch-name]
+workhere add [branch-name]  # Alias for create
 ```
 
 If no branch name is specified, it will automatically create one with a random name like `alice-smith-a1b2` or `bob-jones-c3d4`.
@@ -30,6 +31,7 @@ If no branch name is specified, it will automatically create one with a random n
 
 ```bash
 workhere list
+workhere ls  # Short alias for list
 ```
 
 Shows all worktrees managed by workhere in the current repository.
@@ -38,6 +40,8 @@ Shows all worktrees managed by workhere in the current repository.
 
 ```bash
 workhere delete <branch-name>
+workhere remove <branch-name>  # Alias for delete
+workhere rm <branch-name>      # Short alias for delete
 ```
 
 Removes the specified worktree and its associated branch.
@@ -52,12 +56,27 @@ Removes all worktrees in the `.git/worktree` directory.
 
 ### Options
 
-#### Running Scripts (create command)
+#### Branch Name Prefix (create/add command)
+
+To automatically add the current folder name as a prefix to the branch name:
+
+```bash
+workhere create -p [branch-name]
+workhere add --prefix [branch-name]
+```
+
+Examples:
+- `workhere add -p feature` → creates branch `workhere-feature` (if current folder is "workhere")
+- `workhere add -p` → creates branch like `workhere-alice-smith-a1b2` (auto-generated with prefix)
+- `workhere add feature` → creates branch `feature` (no prefix)
+
+#### Running Scripts (create/add command)
 
 To execute a script after creating the worktree:
 
 ```bash
 workhere create -s "npm install && npm run dev" feature-branch
+workhere add --script "pnpm install" feature-branch
 ```
 
 This will:
@@ -88,6 +107,14 @@ workhere reset -f
 
 ```bash
 workhere create feature/new-feature
+workhere add feature/new-feature  # Using alias
+```
+
+### Create branch with current folder name as prefix
+
+```bash
+workhere add -p feature
+# Creates: yourproject-feature (if current folder is "yourproject")
 ```
 
 ### Install dependencies after creating worktree
@@ -96,10 +123,11 @@ workhere create feature/new-feature
 workhere create -s "pnpm install" bugfix/issue-123
 ```
 
-### Start development server
+### Start development server with prefix
 
 ```bash
-workhere create -s "npm install && npm run dev" develop
+workhere add -p -s "npm install && npm run dev" develop
+# Creates: yourproject-develop and runs the script
 ```
 
 ### List all worktrees
