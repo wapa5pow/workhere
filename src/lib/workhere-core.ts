@@ -4,9 +4,10 @@ import * as crypto from 'crypto';
 
 export interface CreateOptions {
   script?: string;
+  prefix?: boolean;
 }
 
-export function generateBranchName(): string {
+export function generateBranchName(usePrefix: boolean = false): string {
   const firstNames = [
     'alice', 'bob', 'charlie', 'david', 'emma', 'frank', 'grace', 'henry',
     'iris', 'jack', 'kate', 'liam', 'mia', 'noah', 'olivia', 'peter',
@@ -31,7 +32,14 @@ export function generateBranchName(): string {
   const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
   const shortHash = crypto.randomBytes(2).toString('hex');
   
-  return `${firstName}-${lastName}-${shortHash}`;
+  const baseName = `${firstName}-${lastName}-${shortHash}`;
+  
+  if (usePrefix) {
+    const currentFolderName = path.basename(process.cwd());
+    return `${currentFolderName}-${baseName}`;
+  }
+  
+  return baseName;
 }
 
 export function checkGitRepository(): void {

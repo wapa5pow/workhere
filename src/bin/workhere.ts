@@ -28,13 +28,21 @@ program
   .command('add [branch]')
   .description('Create a new git worktree')
   .option('-s, --script <name>', 'Script to execute after creating worktree')
+  .option('-p, --prefix', 'Use current folder name as branch prefix')
   .action((branch: string | undefined, options: CreateOptions) => {
     try {
       checkGitRepository();
       const currentDir = checkRepositoryRoot();
       
       // Generate branch name if not provided
-      const branchName = branch || generateBranchName();
+      let branchName: string;
+      if (branch) {
+        // If branch name is provided and prefix option is set, add prefix
+        branchName = options.prefix ? `${path.basename(currentDir)}-${branch}` : branch;
+      } else {
+        // If no branch name is provided, generate one
+        branchName = generateBranchName(options.prefix || false);
+      }
       
       // Create .git/worktree directory if it doesn't exist
       const worktreeDir = getWorktreeDir(currentDir);
