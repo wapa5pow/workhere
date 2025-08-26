@@ -56,19 +56,19 @@ Removes all worktrees in the `.git/worktree` directory.
 
 ### Options
 
-#### Branch Name Prefix (create/add command)
+#### Folder Name Prefix (create/add command)
 
-To automatically add the current folder name as a prefix to the branch name:
+To automatically add the current folder name as a prefix to the worktree folder name (branch name stays unchanged):
 
 ```bash
 workhere create -p [branch-name]
 workhere add --prefix [branch-name]
 ```
 
-Examples:
-- `workhere add -p feature` → creates branch `workhere-feature` (if current folder is "workhere")
-- `workhere add -p` → creates branch like `workhere-alice-smith-a1b2` (auto-generated with prefix)
-- `workhere add feature` → creates branch `feature` (no prefix)
+Examples (if current folder is "workhere"):
+- `workhere add -p feature` → folder: `workhere-feature`, branch: `feature`
+- `workhere add -p` → folder: `workhere-alice-smith-a1b2`, branch: `alice-smith-a1b2` (auto-generated)
+- `workhere add feature` → folder: `feature`, branch: `feature` (no prefix)
 
 #### Running Scripts (create/add command)
 
@@ -110,11 +110,11 @@ workhere create feature/new-feature
 workhere add feature/new-feature  # Using alias
 ```
 
-### Create branch with current folder name as prefix
+### Create worktree with folder prefix
 
 ```bash
 workhere add -p feature
-# Creates: yourproject-feature (if current folder is "yourproject")
+# Creates folder: yourproject-feature, branch: feature (if current folder is "yourproject")
 ```
 
 ### Install dependencies after creating worktree
@@ -123,11 +123,11 @@ workhere add -p feature
 workhere create -s "pnpm install" bugfix/issue-123
 ```
 
-### Start development server with prefix
+### Start development server with folder prefix
 
 ```bash
 workhere add -p -s "npm install && npm run dev" develop
-# Creates: yourproject-develop and runs the script
+# Creates folder: yourproject-develop, branch: develop, and runs the script
 ```
 
 ### List all worktrees
