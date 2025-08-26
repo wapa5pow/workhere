@@ -35,14 +35,10 @@ program
       const currentDir = checkRepositoryRoot();
       
       // Generate branch name if not provided
-      let branchName: string;
-      if (branch) {
-        // If branch name is provided and prefix option is set, add prefix
-        branchName = options.prefix ? `${path.basename(currentDir)}-${branch}` : branch;
-      } else {
-        // If no branch name is provided, generate one
-        branchName = generateBranchName(options.prefix || false);
-      }
+      const branchName = branch || generateBranchName();
+      
+      // Create folder name with prefix if option is set
+      const folderName = options.prefix ? `${path.basename(currentDir)}-${branchName}` : branchName;
       
       // Create .git/worktree directory if it doesn't exist
       const worktreeDir = getWorktreeDir(currentDir);
@@ -51,17 +47,17 @@ program
       }
 
       // Create worktree path
-      const worktreePath = path.join(worktreeDir, branchName);
+      const worktreePath = path.join(worktreeDir, folderName);
 
       // Check if worktree already exists
       const existingWorktrees = listWorktrees();
       if (existingWorktrees.some(wt => wt.path === worktreePath)) {
-        console.error(`Error: Worktree '${branchName}' already exists at ${worktreePath}`);
+        console.error(`Error: Worktree at path '${worktreePath}' already exists`);
         process.exit(1);
       }
 
       // Create the worktree
-      console.log(`Creating worktree '${branchName}' at ${worktreePath}...`);
+      console.log(`Creating worktree with branch '${branchName}' at ${worktreePath}...`);
       try {
         execSync(`git worktree add "${worktreePath}" -b "${branchName}"`, { stdio: 'inherit' });
       } catch (error) {

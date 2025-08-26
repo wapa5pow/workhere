@@ -7,7 +7,7 @@ export interface CreateOptions {
   prefix?: boolean;
 }
 
-export function generateBranchName(usePrefix: boolean = false): string {
+export function generateBranchName(): string {
   const firstNames = [
     'alice', 'bob', 'charlie', 'david', 'emma', 'frank', 'grace', 'henry',
     'iris', 'jack', 'kate', 'liam', 'mia', 'noah', 'olivia', 'peter',
@@ -32,14 +32,7 @@ export function generateBranchName(usePrefix: boolean = false): string {
   const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
   const shortHash = crypto.randomBytes(2).toString('hex');
   
-  const baseName = `${firstName}-${lastName}-${shortHash}`;
-  
-  if (usePrefix) {
-    const currentFolderName = path.basename(process.cwd());
-    return `${currentFolderName}-${baseName}`;
-  }
-  
-  return baseName;
+  return `${firstName}-${lastName}-${shortHash}`;
 }
 
 export function checkGitRepository(): void {
