@@ -5,6 +5,7 @@ import * as crypto from 'crypto';
 export interface CreateOptions {
   script?: string;
   prefix?: boolean;
+  dir?: string;
 }
 
 export function generateBranchName(): string {
@@ -56,7 +57,11 @@ export function checkRepositoryRoot(): string {
   return currentDir;
 }
 
-export function getWorktreeDir(currentDir: string): string {
+export function getWorktreeDir(currentDir: string, customDir?: string): string {
+  if (customDir) {
+    // If customDir is absolute, use it directly. Otherwise, make it relative to currentDir
+    return path.isAbsolute(customDir) ? customDir : path.join(currentDir, customDir);
+  }
   return path.join(currentDir, '.git', 'worktree');
 }
 

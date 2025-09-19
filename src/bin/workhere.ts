@@ -29,6 +29,7 @@ program
   .description('Create a new git worktree')
   .option('-s, --script <name>', 'Script to execute after creating worktree')
   .option('-p, --prefix', 'Use current folder name as branch prefix')
+  .option('-d, --dir <path>', 'Custom directory for worktrees (default: .git/worktree)')
   .action((branch: string | undefined, options: CreateOptions) => {
     try {
       checkGitRepository();
@@ -39,9 +40,9 @@ program
       
       // Create folder name with prefix if option is set
       const folderName = options.prefix ? `${path.basename(currentDir)}-${branchName}` : branchName;
-      
-      // Create .git/worktree directory if it doesn't exist
-      const worktreeDir = getWorktreeDir(currentDir);
+
+      // Create worktree directory if it doesn't exist
+      const worktreeDir = getWorktreeDir(currentDir, options.dir);
       if (!fs.existsSync(worktreeDir)) {
         fs.mkdirSync(worktreeDir, { recursive: true });
       }
@@ -96,11 +97,12 @@ program
   .command('reset')
   .description('Remove all git worktrees')
   .option('-f, --force', 'Force removal even if worktree is dirty')
-  .action((options: { force?: boolean }) => {
+  .option('-d, --dir <path>', 'Custom directory for worktrees (default: .git/worktree)')
+  .action((options: { force?: boolean; dir?: string }) => {
     try {
       checkGitRepository();
       const currentDir = checkRepositoryRoot();
-      const worktreeDir = getWorktreeDir(currentDir);
+      const worktreeDir = getWorktreeDir(currentDir, options.dir);
       
       const worktrees = listWorktrees();
       const worktreesInProject = worktrees.filter(wt => 
@@ -163,11 +165,12 @@ program
   .alias('rm')
   .description('Remove a specific git worktree')
   .option('-f, --force', 'Force removal even if worktree is dirty')
-  .action((branch: string, options: { force?: boolean }) => {
+  .option('-d, --dir <path>', 'Custom directory for worktrees (default: .git/worktree)')
+  .action((branch: string, options: { force?: boolean; dir?: string }) => {
     try {
       checkGitRepository();
       const currentDir = checkRepositoryRoot();
-      const worktreeDir = getWorktreeDir(currentDir);
+      const worktreeDir = getWorktreeDir(currentDir, options.dir);
       
       const worktrees = listWorktrees();
       const targetWorktree = worktrees.find(wt => 
@@ -222,11 +225,12 @@ program
   .command('list')
   .alias('ls')
   .description('List all git worktrees')
-  .action(() => {
+  .option('-d, --dir <path>', 'Custom directory for worktrees (default: .git/worktree)')
+  .action((options: { dir?: string }) => {
     try {
       checkGitRepository();
       const currentDir = checkRepositoryRoot();
-      const worktreeDir = getWorktreeDir(currentDir);
+      const worktreeDir = getWorktreeDir(currentDir, options.dir);
       
       const worktrees = listWorktrees();
       const worktreesInProject = worktrees.filter(wt => 
